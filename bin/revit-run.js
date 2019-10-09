@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const shell = require('shelljs');
-const { spawn } = require('child_process').spawn;
+var spawn = require('child_process').spawn;
 
 var fs = require("fs");
 
@@ -32,7 +32,7 @@ try
 
   shell.exec("cp " + path + " " + path + ".process", { silent: true });
 
-  fs.writeFileSync(path, revisionNumber, {encoding:'utf8',flag:'w'});
+  fs.writeFileSync(path, revisionNumber, {encoding:'utf8', flag:'w'});
 
   spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
 
@@ -40,9 +40,9 @@ try
   shell.exec("git reset", { silent: true });
   shell.exec("rm " + path, { silent: true });
   shell.exec("mv " + path + ".process " + path, { silent: true });
-  shell.exit("echo Unhandled. exception: Revision iteration was not successful. All changes were rolled back.");
+  shell.exec("echo Revision was not iterated");
 }
 
-shell.exec("echo Current revision isd '" + revisionNumber +"'.");
+shell.exec("echo Current revision is '" + revisionNumber +"'");
 
-shell.exec("rm " + path + ".process ", { silent: true });
+shell.exec("rm " + path + ".process", { silent: true });
