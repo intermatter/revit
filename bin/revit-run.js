@@ -36,7 +36,7 @@ try
 
   //shell.exec("echo Current revision is '" + revisionNumber +"'.");
 
-  spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
+  //spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
 
 } catch(err) {
   shell.exec("git reset", { silent: true });
