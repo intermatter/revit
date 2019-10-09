@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const shell = require('shelljs');
-const { spawn } = require('child_process');
+const { spawn } = require('child_process').spawn;
 
 var fs = require("fs");
 
@@ -25,24 +25,22 @@ try
       revisionNumber = setRevisionNumber;
   }
   revisionNumber++;
-  const script = "cd " + process.cwd() + " && git add . && git commit -m \"rev. " + revisionNumber + "\"";
+  
+  const addcommit = "git add . && git commit -m \"rev. " + revisionNumber + "\"";
 
-  const { code } = shell.exec(script, { silent: false })
+  shell.exec(addcommit, { silent: false })
+
+  shell.exec("cp " + path + " " + path + ".process", { silent: true });
+
+  fs.writeFileSync(path, revisionNumber, {encoding:'utf8',flag:'w'});
+
+  //shell.exec("echo Current revision is '" + revisionNumber +"'.");
 
   spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
 
-  if(code && code !== 0)
-  {
-    shell.exec("git reset");
-    shell.exec("echo Revision iteration was not successful.,..... Current revision is at 'rev. " + (revisionNumber-1) +"'.");
-  }
-  else
-  {
-    shell.exec("echo Current revision is '" + revisionNumber +"'.");
-    fs.writeFile('.revrc', revisionNumber);
-  }
-    shell.exec("echo " + code);
-
 } catch(err) {
-  shell.exit(err)
+  shell.exec("git reset", { silent: true });
+  shell.exec("rm " + path, { silent: true });
+  shell.exec("mv " + path + ".process " + path, { silent: true });
+  shell.exit("echo Unhandled exception: Revision iteration was not successful. All changes were rolled back.");
 }
