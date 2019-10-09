@@ -1,7 +1,33 @@
 #!/usr/bin/env node
-import {windows} from 'platform-detect/os.mjs';
 const shell = require('shelljs');
-if(windows)
-shell.exec("cd ..");
-else
-shell.exec("rev=$(cat .revrc) && rev=$((rev+1)) && echo \"${rev}\" > .revrc &&  git add . && git commit -m \"rev. ${rev}\" && git push -u origin master");
+var fs = require("fs");
+
+const args = process.argv.slice(2)
+const setRevisionNumber = args[0]
+
+const path = './.revrc';
+
+var revisionNumber;
+
+try
+{
+  if (fs.existsSync(path))
+  {
+    revisionNumber = parseInt(fs.readFileSync("./.revrc", "utf-8").trim());
+  }
+  else
+  {
+    if(!setRevisionNumber)
+      shell.exit(".revrc was found in this directory.\nTo set the current revision and push to master, run: \"revit REVISION\"\nExample: revit 0");
+    else
+      revisionNumber = setRevisionNumber;
+  }
+  revisionNumber++;
+  shell.exec("git add . && git commit -m \"rev. " + revisionNumber + "\" && git push -u origin master");
+  fs.writeFile('.revrc', revisionNumber);
+} catch(err) {
+  shell.exit(err)
+}
+
+
+
