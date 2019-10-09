@@ -38,8 +38,7 @@ try {
     shell.exec("rm " + path, { silent: true });
     shell.exec("mv " + path + ".process " + path, { silent: true });
     shell.exec("echo Revision was not iterated");
+} finally {
+    shell.exec("rm " + path + ".process", { silent: true });
 }
-
 //shell.exec("echo Current revision is '" + revisionNumber +"'");
-
-shell.exec("rm " + path + ".process", { silent: true });
