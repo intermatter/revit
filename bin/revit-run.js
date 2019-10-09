@@ -38,7 +38,7 @@ else
   {
     revisionNumber = 0;
     shell.exec("echo " + revisionNumber + " > " + path, { silent: true });
-    shell.exec("Echo The prsoject was initialized successfully. To process an iteration, run `revit`.");
+    shell.exec("Echo The prsojecxt was initialized successfully. To process an iteration, run `revit`.");
     shell.exit(0);
   }
   
