@@ -1,0 +1,29 @@
+{
+    "name": "revit",
+    "version": "0.1.0",
+    "dependencies": {
+        "shelljs": "0.8.3"
+    },
+    "description": "NPM package to enable a revisionary iteration workflow for monochromatic repositories.",
+    "bin": {
+        "revit": "./bin/revit-run.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com:intermatter/revit.git"
+    },
+    "keywords": [
+        "workflows",
+        "ci",
+        "cd"
+    ],
+    "author": "Intermatter IO",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/intermatter/revit/issues"
+    },
+    "homepage": "https://github.com/intermatter/revit"
+}
