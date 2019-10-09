@@ -2,6 +2,7 @@
     "name": "revit",
     "version": "0.1.0",
     "dependencies": {
+        "platform-detect": "^2.0.3",
         "shelljs": "0.8.3"
     },
     "description": "NPM package to enable a revisionary iteration workflow for monochromatic repositories.",
