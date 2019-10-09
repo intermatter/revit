@@ -23,18 +23,24 @@ try
       revisionNumber = setRevisionNumber;
   }
   revisionNumber++;
-  const script = "git add . && git commit -m \"rev. " + revisionNumber + "\" && git push -u origin master";
-  const { stdout, stderr, code } = sh.exec(script, { silent: true })
+  const script = "cd " + process.cwd() + " && git add . && git commit -m \"rev. " + revisionNumber + "\"";
 
-  if(stdout.indexOf("fatal") !== 0)
-    shell.exec("echo Success.");
+  const { code } = shell.exec(script, { silent: false })
+
+  child_process.execFileSync('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
+
+  if(code && code !== 0)
+  {
+    shell.exec("git reset");
+    shell.exec("echo Revision iteration was not successful. Current revision is at 'rev. " + (revisionNumber-1) +"'.");
+  }
   else
-    shell.exec("echo Failed.");
+  {
+    shell.exec("echo Current revision is '" + revisionNumber +"'.");
+    fs.writeFile('.revrc', revisionNumber);
+  }
+    shell.exec("echo " + code);
 
-  fs.writeFile('.revrc', revisionNumber);
 } catch(err) {
   shell.exit(err)
 }
-
-
-
