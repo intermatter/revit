@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 const shell = require('shelljs');
+const { spawn } = require('child_process');
+
 var fs = require("fs");
 
 const args = process.argv.slice(2)
@@ -27,7 +29,7 @@ try
 
   const { code } = shell.exec(script, { silent: false })
 
-  child_process.execFileSync('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
+  spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
 
   if(code && code !== 0)
   {
