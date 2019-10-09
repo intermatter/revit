@@ -43,6 +43,6 @@ try
   shell.exit("echo Unhandled exception: Revision iteration was not successful. All changes were rolled back.");
 }
 
-shell.exec("echo Current revision is '" + revisionNumber +"'.");
+shell.exec("echo Current revision isd '" + revisionNumber +"'.");
 
 shell.exec("rm " + path + ".process ", { silent: true });
