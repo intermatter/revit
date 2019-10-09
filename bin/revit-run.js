@@ -23,7 +23,11 @@ try
       revisionNumber = setRevisionNumber;
   }
   revisionNumber++;
-  shell.exec("git add . && git commit -m \"rev. " + revisionNumber + "\" && git push -u origin master");
+  if(shell.exec("git add . && git commit -m \"rev. " + revisionNumber + "\" && git push -u origin master"))
+    shell.exec("echo Success");
+  else
+    shell.exec("echo Failed");
+
   fs.writeFile('.revrc', revisionNumber);
 } catch(err) {
   shell.exit(err)
