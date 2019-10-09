@@ -40,7 +40,7 @@ try
   shell.exec("git reset", { silent: true });
   shell.exec("rm " + path, { silent: true });
   shell.exec("mv " + path + ".process " + path, { silent: true });
-  shell.exit("echo Unhandled exception: Revision iteration was not successful. All changes were rolled back.");
+  shell.exit("echo Unhandled. exception: Revision iteration was not successful. All changes were rolled back.");
 }
 
 shell.exec("echo Current revision isd '" + revisionNumber +"'.");
