@@ -23,8 +23,11 @@ try
       revisionNumber = setRevisionNumber;
   }
   revisionNumber++;
-  if(shell.exec("git add . && git commit -m \"rev. " + revisionNumber + "\" && git push -u origin master").indexOf("fatal") !== 0)
-    shell.exec("echo Success");
+  const script = "git add . && git commit -m \"rev. " + revisionNumber + "\" && git push -u origin master";
+  const { stdout, stderr, code } = sh.exec(script, { silent: true })
+
+  if(stdout.indexOf("fatal") !== 0)
+    shell.exec("echo Success.");
   else
     shell.exec("echo Failed.");
 
