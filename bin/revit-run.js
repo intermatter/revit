@@ -6,7 +6,7 @@ var spawn = require('child_process').spawn;
 var fs = require("fs");
 
 const args = process.argv.slice(2)
-const setRevisionNumber = args[0]
+const init = args[0]
 
 const path = './.revrc';
 
@@ -16,18 +16,20 @@ try {
     if (fs.existsSync(path)) {
         revisionNumber = parseInt(fs.readFileSync("./.revrc", "utf-8").trim());
     } else {
-        if (!setRevisionNumber)
-            shell.exit(".revrc was found in this directory.\nTo set the current revision and proceed with the iteration, run: \"revit REVISION\"\nExample: revit 0");
+        if (!init || init !== "i")
+          shell.exit(".revrc was not found in this directory.\nTo proceed, create an empty .revrc in the root of your project, or run: revit i");
         else
-            revisionNumber = setRevisionNumber;
+        {
+          revisionNumber = 0;
+          shell.exec("echo " + revisionNumber + " > " + path, { silent: true });
+        }
     }
-    revisionNumber++;
-
     const addcommit = "git add . && git commit -m \"rev. " + revisionNumber + "\"";
 
     shell.exec(addcommit, { silent: false })
 
-    //fs.writeFileSync(path, revisionNumber, { encoding: 'utf8', flag: 'w' });
+    revisionNumber++;
+
     shell.exec("echo " + revisionNumber + " > " + path, { silent: true });
 
     spawn('git', ['push', '-u', 'origin', 'master'], { stdio: 'inherit' });
@@ -39,4 +41,3 @@ try {
 
     shell.exec("echo Revision was not iterated");
 }
-//shell.exec("echo Current revision is '" + revisionNumber +"'");

@@ -8,10 +8,16 @@ npm i -g revit
 ````
 
 ## Usage
-To create an iteration, run:
+
+To initialize revit in your project:
+````
+revit i
+````
+
+To process an iteration:
 ````
 revit
 ````
 
 ## Note
-.revrc is auto-incremented. It should be committed and should not be manually modified.
+The `revit` command sets the comment of the next iteration to the number in the .revrc file, which will always be auto-incremented.
