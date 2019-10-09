@@ -1,6 +1,6 @@
 # Revit
 
-This module acts as an alias for "git add . && git commit -m "rev. REVISION_ID" && git push -u origin master", where REVISION_ID is auto-incremented with a local .revrc file.
+This module acts as a cross-platform, global alias for "git add . && git commit -m "" --allow-empty-message && git push -u origin master".
 
 ## Installation
 ````
@@ -9,15 +9,12 @@ npm i -g revit
 
 ## Usage
 
-To initialize revit in your project:
-````
-revit i
-````
-
-To process an iteration:
+To add, commit and push to master (with an empty message):
 ````
 revit
 ````
 
-## Note
-The `revit` command sets the comment of the next iteration to the number in the .revrc file, which will always be auto-incremented.
+To add, commit and push to master (with a message):
+````
+revit "My message"
+````
