@@ -34,13 +34,15 @@ try
 
   fs.writeFileSync(path, revisionNumber, {encoding:'utf8',flag:'w'});
 
-  //shell.exec("echo Current revision is '" + revisionNumber +"'.");
-
-  //spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
+  spawn('git', ['push', '-u', 'origin', 'master'], {stdio: 'inherit'});
 
 } catch(err) {
   shell.exec("git reset", { silent: true });
   shell.exec("rm " + path, { silent: true });
   shell.exec("mv " + path + ".process " + path, { silent: true });
-  shell.exec("echo Unhandled exception: Revision iteration was not successful. All changes were rolled back.");
+  shell.exit("echo Unhandled exception: Revision iteration was not successful. All changes were rolled back.");
 }
+
+shell.exec("echo Current revision is '" + revisionNumber +"'.");
+
+shell.exec("rm " + path + ".process ", { silent: true });
