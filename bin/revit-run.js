@@ -34,7 +34,7 @@ try
   if(code && code !== 0)
   {
     shell.exec("git reset");
-    shell.exec("echo Revision iteration was not successful. Current revision is at 'rev. " + (revisionNumber-1) +"'.");
+    shell.exec("echo Revision iteration was not successful.. Current revision is at 'rev. " + (revisionNumber-1) +"'.");
   }
   else
   {
