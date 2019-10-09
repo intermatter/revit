@@ -13,20 +13,42 @@ const path = './.revrc';
 var revisionNumber;
 
 try {
-    if (fs.existsSync(path)) {
-        revisionNumber = parseInt(fs.readFileSync("./.revrc", "utf-8").trim());
-    } else {
-        if (!init || init !== "i")
-          shell.exit(".revrc was not found in this directory.\nTo proceed, create an empty .revrc in the root of your project, or run: revit i");
-        else
+    if (fs.existsSync(path))
+      if(init == "i")
+      {
+        shell.exec("Echo Ignoring the initialization flag since a .revrc file already exists in the current directory. To reset this project, run `revit if`. If you intend to process an iteration, run `revit`.");
+        shell.exit(0);
+      }
+      else
+        if(init == "if")
         {
           revisionNumber = 0;
           shell.exec("echo " + revisionNumber + " > " + path, { silent: true });
+          shell.exec("Echo The project was reset successfully. To process an iteration, run `revit`.");
+          shell.exit(0);
         }
-    }
+      else
+        revisionNumber = parseInt(fs.readFileSync(path, "utf-8").trim());
+    else 
+      if (init != "i" || init == "if")
+      {
+        shell.exec("Echo Error: A .revrc file was not found in this directory. To proceed, run `revit i` or create an empty .revrc file in the root of your project.");
+        shell.exit(0);
+      }
+      else
+      {
+        revisionNumber = 0;
+        shell.exec("echo " + revisionNumber + " > " + path, { silent: true });
+        shell.exec("Echo The project was initialized successfully. To process an iteration, run `revit`.");
+        shell.exit(0);
+      }
+      
+    if(!revisionNumber)
+      revisionNumber = 0;
+          
     const addcommit = "git add . && git commit -m \"rev. " + revisionNumber + "\"";
 
-    shell.exec(addcommit, { silent: false })
+    shell.exec(addcommit, { silent: false });
 
     revisionNumber++;
 
@@ -39,5 +61,5 @@ try {
 
     shell.exec("echo " + (revisionNumber-1) + " > " + path, { silent: true });
 
-    shell.exec("echo Revision was not iterated");
+    shell.exec("echo Revision was not iterated.");
 }

@@ -1,44 +1,31 @@
-#!/usr/bin/env node
-
-const shell = require('shelljs');
-var spawn = require('child_process').spawn;
-
-var fs = require("fs");
-
-const args = process.argv.slice(2)
-const setRevisionNumber = args[0]
-
-const path = './.revrc';
-
-var revisionNumber;
-
-try {
-    if (fs.existsSync(path)) {
-        revisionNumber = parseInt(fs.readFileSync("./.revrc", "utf-8").trim());
-    } else {
-        if (!setRevisionNumber)
-            shell.exit(".revrc was found in this directory.\nTo set the current revision and proceed with the iteration, run: \"revit REVISION\"\nExample: revit 0");
-        else
-            revisionNumber = setRevisionNumber;
-    }
-    revisionNumber++;
-
-    const addcommit = "git add . && git commit -m \"rev. " + revisionNumber + "\"";
-
-    shell.exec(addcommit, { silent: false })
-
-    shell.exec("cp " + path + " " + path + ".process", { silent: true });
-
-    fs.writeFileSync(path, revisionNumber, { encoding: 'utf8', flag: 'w' });
-
-    spawn('git', ['push', '-u', 'origin', 'master'], { stdio: 'inherit' });
-
-} catch (err) {
-    shell.exec("git reset", { silent: true });
-    shell.exec("rm " + path, { silent: true });
-    shell.exec("mv " + path + ".process " + path, { silent: true });
-    shell.exec("echo Revision was not iterated");
-} finally {
-    shell.exec("rm " + path + ".process", { silent: true });
+{
+    "name": "revit",
+    "version": "0.1.3",
+    "dependencies": {
+        "@types/node": "^12.7.12",
+        "platform-detect": "^2.0.3",
+        "shelljs": "0.8.3"
+    },
+    "description": "NPM package to enable a revisionary iteration workflow for monochromatic repositories.",
+    "bin": {
+        "revit": "./bin/revit-run.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com:intermatter/revit.git"
+    },
+    "keywords": [
+        "workflows",
+        "ci",
+        "cd"
+    ],
+    "author": "Intermatter IO",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/intermatter/revit/issues"
+    },
+    "homepage": "https://github.com/intermatter/revit"
 }
-//shell.exec("echo Current revision is '" + revisionNumber +"'");
